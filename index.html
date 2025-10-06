@@ -22,7 +22,7 @@
     </body>
     
     
-</html> -->
+</html>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -48,7 +48,7 @@
   height="800">
 </iframe>
 
-<!-- Exemple par date -->
+<!-- Exemple par date
 <h2>2025-10-01</h2>
 <div class="video-card">
   <iframe src="https://youtu.be/SOmrNpueiyA?si=lipC5NY_juUSD0O4" frameborder="0" allowfullscreen></iframe>
@@ -69,7 +69,129 @@
   <p><strong>Weapon:</strong> Bow</p>
 </div>
 
-<!-- Tu peux continuer à ajouter tes vidéos ici, en créant une section <h2> par date ou catégorie -->
+
+
+</body>
+</html -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Filtrage de vidéos</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  select { margin-right: 10px; margin-bottom: 10px; }
+  iframe { margin: 10px 0; display: block; }
+</style>
+</head>
+<body>
+
+<h1>Vidéos YouTube filtrables</h1>
+
+<!-- Filtres -->
+<label>Date: <select id="filterDate"><option value="">Toutes</option></select></label>
+<label>Guilde: <select id="filterGuild"><option value="">Toutes</option></select></label>
+<label>Caller: <select id="filterCaller"><option value="">Tous</option></select></label>
+<label>Issue: <select id="filterIssue"><option value="">Toutes</option></select></label>
+<label>Weapon: <select id="filterWeapon"><option value="">Toutes</option></select></label>
+
+<div id="videoContainer"></div>
+
+<script>
+// Données des vidéos
+const videos = [
+  {
+    title: "Combat 1",
+    url: "https://www.youtube.com/embed/VIDEO_ID1",
+    date: "2025-10-01",
+    guild: "Guilde A",
+    caller: "Alice",
+    issue: "Win",
+    weapon: "Sword"
+  },
+  {
+    title: "Combat 2",
+    url: "https://www.youtube.com/embed/VIDEO_ID2",
+    date: "2025-10-02",
+    guild: "Guilde B",
+    caller: "Bob",
+    issue: "Lose",
+    weapon: "Bow"
+  },
+  // Ajoute ici toutes tes vidéos
+];
+
+// Remplir les filtres automatiquement
+function populateFilters() {
+  const dates = [...new Set(videos.map(v => v.date))];
+  const guilds = [...new Set(videos.map(v => v.guild))];
+  const callers = [...new Set(videos.map(v => v.caller))];
+  const issues = [...new Set(videos.map(v => v.issue))];
+  const weapons = [...new Set(videos.map(v => v.weapon))];
+
+  const fillSelect = (id, items) => {
+    const select = document.getElementById(id);
+    items.forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item;
+      opt.textContent = item;
+      select.appendChild(opt);
+    });
+  };
+
+  fillSelect("filterDate", dates);
+  fillSelect("filterGuild", guilds);
+  fillSelect("filterCaller", callers);
+  fillSelect("filterIssue", issues);
+  fillSelect("filterWeapon", weapons);
+}
+
+// Afficher les vidéos filtrées
+function displayVideos() {
+  const date = document.getElementById("filterDate").value;
+  const guild = document.getElementById("filterGuild").value;
+  const caller = document.getElementById("filterCaller").value;
+  const issue = document.getElementById("filterIssue").value;
+  const weapon = document.getElementById("filterWeapon").value;
+
+  const container = document.getElementById("videoContainer");
+  container.innerHTML = "";
+
+  const filtered = videos.filter(v =>
+    (date === "" || v.date === date) &&
+    (guild === "" || v.guild === guild) &&
+    (caller === "" || v.caller === caller) &&
+    (issue === "" || v.issue === issue) &&
+    (weapon === "" || v.weapon === weapon)
+  );
+
+  filtered.forEach(v => {
+    const iframe = document.createElement("iframe");
+    iframe.src = v.url;
+    iframe.width = "560";
+    iframe.height = "315";
+    iframe.frameBorder = "0";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+
+    const title = document.createElement("p");
+    title.textContent = v.title;
+
+    container.appendChild(title);
+    container.appendChild(iframe);
+  });
+}
+
+// Initialisation
+populateFilters();
+displayVideos();
+
+// Ajouter les événements sur les filtres
+document.querySelectorAll("select").forEach(sel => sel.addEventListener("change", displayVideos));
+</script>
 
 </body>
 </html>
+
